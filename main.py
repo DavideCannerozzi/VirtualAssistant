@@ -1,16 +1,27 @@
 import speech_recognition as sr
-import pyttsx3
+import webbrowser
 
-r = sr.Recognizer
+r = sr.Recognizer()
 
-try:
-    with sr.Microphone() as source:
+
+with sr.Microphone() as source:
         print("Hi I am Davide...Talk To Me")
         # convert voice to text
         audio = r.listen(source)
-        if 'dave' in audio:
-            print(audio)
-        else:
-            print('Hey! My Name Is Dave')
-except:
-    pass
+        try:
+            data = r.recognize_google(audio)
+            if "Davide" in audio:
+                print("How Can I Help You?")
+            if "Location" in audio:
+                location = print("What is the Location?")
+                print("Location is: " + location)
+                webbrowser.open_new_tab('https://google/maps/place' + location)
+            if "Search" in audio:
+                webbrowser.open_new_tab('https://google.com/search')
+            else:
+                print('Error')
+        except sr.UnknownValueError:
+                print("Can't understand, Try Again")
+
+
+
