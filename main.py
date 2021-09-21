@@ -1,27 +1,43 @@
 import speech_recognition as sr
 import webbrowser
+import playsound
+from gtts import gTTS
+import os
 
-r = sr.Recognizer()
 
 
-with sr.Microphone() as source:
-        print("Hi I am Davide...Talk To Me")
-        # convert voice to text
+def speak(text):
+    tts = gTTS(text=text)
+    audio_file = "dave.mp4"
+    tts.save(audio_file)
+    playsound.playsound(audio_file)
+
+
+def get_audio():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
         audio = r.listen(source)
         try:
             data = r.recognize_google(audio)
-            if "Davide" in audio:
-                print("How Can I Help You?")
-            if "Location" in audio:
-                location = print("What is the Location?")
-                print("Location is: " + location)
-                webbrowser.open_new_tab('https://google/maps/place' + location)
+            print(data)
+            if "Hey Dave" in audio:
+                speak('How are you?')
             if "Search" in audio:
-                webbrowser.open_new_tab('https://google.com/search')
-            else:
-                print('Error')
+                webbrowser.open_new_tab('https://google.com')
+            if "Stackoverflow" in audio:
+                webbrowser.open_new_tab('https://stackoverflow.com/')
+            if "Youtube" in audio:
+                webbrowser.open_new_tab('https://youtube.com/')
         except sr.UnknownValueError:
-                print("Can't understand, Try Again")
+                speak("Can't understand, Try Again")
+
+
+data = get_audio()
+
+
+
+
+
 
 
 
